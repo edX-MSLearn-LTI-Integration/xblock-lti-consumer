@@ -483,11 +483,10 @@ class LtiNrpsContextMembershipViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             data = compat.get_course_members(course_key)
             
-            
             user_ids = data.keys()
-           
+            
             self.attach_external_user_ids(data)
-            log.info("data after the changes: %s",data)
+            
             # build correct format for the serializer
             result = {
                 'id': self.request.build_absolute_uri(),

@@ -479,25 +479,13 @@ class LtiNrpsContextMembershipViewSet(viewsets.ReadOnlyModelViewSet):
 
         # get course key
         course_key = self.request.lti_configuration.location.course_key
-        log.info("start processing member data.")
+        
         try:
             data = compat.get_course_members(course_key)
-            log.info("data from get_course_members: %s",data)
+            
             
             user_ids = data.keys()
-            for userid in user_ids:
-                full_name = data[userid]["name"]
-                full_name = full_name.replace(',', ' ')
-                name_list = full_name.split(' ', 1)
-                if(len(name_list) == 1):
-                    name_list.append('')
-                given_name = name_list[0]
-                family_name = name_list[1]
-                data[userid]["given_name"] = given_name
-                if(len(name_list) < 2):
-                    data[userid]["family_name"] = ''
-                else:
-                    data[userid]["family_name"] = family_name
+           
             self.attach_external_user_ids(data)
             log.info("data after the changes: %s",data)
             # build correct format for the serializer
@@ -508,10 +496,10 @@ class LtiNrpsContextMembershipViewSet(viewsets.ReadOnlyModelViewSet):
                 },
                 'members': data.values(),
             }
-            log.info("result being sent: %s",data)
+            
             # Serialize and return data NRPS reponse.
             serializer = self.get_serializer_class()(result)
-            log.info("serializer data: %s",serializer.data)
+            
             return Response(serializer.data)
 
         except LtiError as ex:

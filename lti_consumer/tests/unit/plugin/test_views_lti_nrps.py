@@ -293,6 +293,8 @@ class LtiNrpsContextMembershipViewsetTestCase(LtiNrpsTestCase):
         self.assertIn('status', member_fields)
         self.assertIn('email', member_fields)
         self.assertIn('name', member_fields)
+        self.assertIn('given_name', member_fields)
+        self.assertIn('family_name', member_fields)
 
     @patch('lti_consumer.plugin.views.get_lti_pii_sharing_state_for_course', Mock(return_value=False))
     @patch(

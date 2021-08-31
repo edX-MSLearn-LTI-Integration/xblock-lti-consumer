@@ -497,6 +497,8 @@ class LtiNrpsContextMembershipViewSet(viewsets.ReadOnlyModelViewSet):
                     data[userid]["family_name"] = ''
                 else:
                     data[userid]["family_name"] = family_name
+                if(data[userid]["family_name"] == '' and data[userid]["given_name"] == '' ):
+                    data[userid]["given_name"] = data[userid]["email"]
             self.attach_external_user_ids(data)
             log.info("data after the changes: %s",data)
             # build correct format for the serializer
